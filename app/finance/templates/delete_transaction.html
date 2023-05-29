@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="form_container">
+    <form method="POST">
+        <h2>Delete {{ object.category }} {{ object.amount }} руб?</h2>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <a href="{% url 'home' %}">Back</a>
+        <button type="submit">Delete</buttom>
+    </form>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="balance">
+    <h1>Balance: {{ user_balance }} руб</h1>
+</div>
+<hr>
+
+<div class="section_container">
+    <div class="left-section">
+        <div class="graph_container">
+            {{ plot_div|safe }}
+        </div>
+        <div class="history_container">
+            <ul>
+                {% for transaction in transaction_history_ex %}
+                        <li><b><a href="{% url 'detail_transaction' transaction.pk %}">-{{ transaction.amount }} руб</a></b>{{ transaction.category }} {{ transaction.date }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="right-section">
+        <div class="buttons_container">
+            <div class="one">
+                <h1><a href="{% url 'add_transaction' %}">Add Transaction</a></h1>
+            </div>
+            <div class="two">
+                <h1><a href="{% url 'edit_account_balance' user.username %}">Edit balance</a></h1>
+            </div>
+            <div class="three">
+                <h1><a href="{% url 'converter' %}">Converter</a></h1>
+            </div>
+        </div>
+        <div class="history_container" id="history_container2">
+            {% if transaction_history_in %}
+                <ul>
+                    {% for transaction in transaction_history_in %}
+                            <li><b><a href="{% url 'detail_transaction' transaction.pk %}">+{{ transaction.amount }} руб</a></b>{{ transaction.category }} {{ transaction.date }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Nothing</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="bottom_section_container">
+    <div class="bottom_section">
+        <div class="heading"><h1><a href="{% url 'history_transactions' %}">Transaction history</h1></a></div>
+        <div class="history">
+            <ul>
+                {% if transaction_history  %}
+                    {% for transaction in transaction_history %}
+                        {% if transaction.type == 'Ex' %}
+                            <li><b><a href="{% url 'detail_transaction' transaction.pk %}">-{{ transaction.amount }} руб</a></b>{{ transaction.category }} {{transaction.date }}</li>
+                        {% else %}
+                            <li><b><a href="{% url 'detail_transaction' transaction.pk %}">+{{ transaction.amount }} руб</a></b>{{ transaction.category }} {{transaction.date }}</li>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p>Nothing</p>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock content %}
