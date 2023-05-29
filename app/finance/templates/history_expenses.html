@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="buttons_container" id="buttons_container2">
+    <div class="one">
+        <h1><a href="{% url 'history_transactions' %}">Back</a></h1>
+    </div>
+</div>
+
+<div class="bottom_section_container">
+    <div class="bottom_section">
+        <div class="heading"><h1>Expenses</h1></div>
+        <div class="history">
+            <ul>
+                {% if expenses_transactions  %}
+                    {% for transaction in page_obj %}
+                        {% if transaction.type == 'Ex' %}
+                            <li><b><a href="{% url 'detail_transaction' transaction.pk %}">-{{ transaction.amount }} руб</a></b>{{ transaction.category }} {{transaction.date }}</li>
+                        {% else %}
+                            <li><b><a href="{% url 'detail_transaction' transaction.pk %}">+{{ transaction.amount }} руб</a></b>{{ transaction.category }} {{transaction.date }}</li>
+                        {% endif %}
+                    {% endfor %}
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1">&laquo; first</a>
+                                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                            {% endif %}
+                    
+                            <span class="current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+                    
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                {% else %}
+                    <p>Nothing</p>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
