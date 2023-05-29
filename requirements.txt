@@ -1,4 +1,0 @@
-django==4.2.1
-requests==23.1.2
-matplotlib==3.7.1
-pandas
